@@ -3,7 +3,8 @@ import type { TimelineItem } from '../types';
 export const experiencesData: TimelineItem[] = [
   {
     id: 'exp-jhic',
-    year: '',
+    year: '2025',
+    quarter: 'Agustus',
     title: 'JHIC 1.0 — Top 30',
     category: 'Competition',
     role: 'Finalis Top 30',
@@ -18,7 +19,8 @@ export const experiencesData: TimelineItem[] = [
   },
   {
     id: 'exp-kron',
-    year: '',
+    year: '2025',
+    quarter: 'Oktober',
     title: 'Kompetisi Robotika Nusantara (KRON) — Medali Perak',
     category: 'Competition',
     role: 'Medalis Perak',

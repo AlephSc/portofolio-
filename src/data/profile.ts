@@ -3,7 +3,7 @@ import type { ProfileData } from '../types';
 export const profileData: ProfileData = {
   name: "Muhammad Fajar Fristiawan",
   role: "Software Engineer",
-  location: "",
+  location: "Jombang, Jawa Timur",
   shortBio: "Software Engineer dengan fokus pada pemecahan masalah, pemrograman Lua, dan rekayasa prompt AI — ketajaman teknis terasah lewat kompetisi seperti JHIC dan KRON.",
   fullBio: [
     "Saya seorang Software Engineer yang menikmati membedah masalah hingga ke akarnya. Dari menulis kode Lua hingga merancang prompt yang efektif untuk model AI, saya percaya pemahaman fondasi yang kuat adalah kunci setiap solusi yang tahan lama.",
@@ -16,7 +16,8 @@ export const profileData: ProfileData = {
     { label: "KRON", value: "Perak", subtext: "Medali Robotika" }
   ],
   socials: [
-    { platform: "GitHub", url: "https://github.com/AlephSc", username: "AlephSc" }
+    { platform: "GitHub", url: "https://github.com/AlephSc", username: "AlephSc" },
+    { platform: "Email", url: "mailto:alephsc25@gmail.com", username: "alephsc25@gmail.com" }
   ],
-  contactEmail: ""
+  contactEmail: "alephsc25@gmail.com"
 };
