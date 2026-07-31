@@ -28,9 +28,9 @@ export const Projects: React.FC = () => {
             <Layers size={16} />
             <span>Koleksi Proyek Terpilih</span>
           </div>
-          <h2 className="section-title">Arsitektur & Aplikasi Nyata</h2>
+          <h2 className="section-title">Proyek & Karya</h2>
           <p className="section-subtitle">
-            Setiap proyek mengedepankan efisiensi struktur, kejelasan logika backend, dan keputusasaan terhadap kompromi performa.
+            Karya yang sudah dipublikasikan — jujur, terukur, dan bisa dikunjungi.
           </p>
         </motion.div>
 
