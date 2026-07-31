@@ -7,7 +7,6 @@ interface NavbarProps {
   theme: Theme;
   onToggleTheme: () => void;
   isIntense: boolean;
-  intensityRatio: number;
   onToggleManualIntense: () => void;
 }
 
@@ -15,7 +14,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
   isIntense,
-  intensityRatio,
   onToggleManualIntense,
 }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -97,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Flame className="intensity-icon" size={16} />
             <span className="intensity-label">
-              {intensityRatio > 0.3 ? `Intense ${(intensityRatio * 100).toFixed(0)}%` : 'Focus'}
+              {isIntense ? 'Intense' : 'Focus'}
             </span>
           </button>
 

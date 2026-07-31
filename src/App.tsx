@@ -15,7 +15,7 @@ import { Footer } from './components/Footer';
 
 export function App() {
   const { theme, toggleTheme } = useTheme();
-  const { intensity, isIntense, toggleManualIntense } = useScrollIntensity();
+  const { isIntense, manualIntense, toggleManualIntense } = useScrollIntensity();
 
   return (
     <MotionConfig reducedMotion="user">
@@ -28,13 +28,12 @@ export function App() {
           theme={theme}
           onToggleTheme={toggleTheme}
           isIntense={isIntense}
-          intensityRatio={intensity}
           onToggleManualIntense={toggleManualIntense}
         />
 
         {/* Main Content Sections */}
         <main style={{ position: 'relative', zIndex: 10 }}>
-          <Hero />
+          <Hero isFlipped={manualIntense} onFlip={toggleManualIntense} />
           <TechMarquee />
           <Profile />
           <Timeline />

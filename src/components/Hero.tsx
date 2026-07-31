@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Terminal, Compass, Sparkles, Activity } from 'lucide-react';
+import { ArrowRight, Terminal, Compass, Sparkles, Activity, Award } from 'lucide-react';
 import { profileData } from '../data/profile';
 
 const ROLES = ['Software Engineer', 'Lua Programmer', 'AI Prompt Engineer'];
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isFlipped, onFlip }) => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -96,25 +96,63 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Column: Cyber Photo Frame with RGB Glitch */}
+        {/* Right Column: Flippable Profile Card */}
         <motion.div
           className="hero-image-container"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="portrait-wrapper cyber-photo-glitch">
-            <div className="portrait-border-glow" />
-            <img
-              src={profileData.avatarUrl}
-              alt={profileData.name}
-              className="portrait-image"
-              loading="eager"
-            />
-            <div className="scanlines-overlay" />
-            <div className="portrait-badge">
-              <Sparkles size={14} className="badge-icon" />
-              <span>Personal Engineering Story</span>
+          <span className="flip-hint">
+            {isFlipped ? '// identitas intense' : '// klik untuk flip'}
+          </span>
+
+          <div
+            className={`portrait-flip ${isFlipped ? 'is-flipped' : ''}`}
+            onClick={onFlip}
+            role="button"
+            tabIndex={0}
+            aria-label="Balik kartu profil"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onFlip();
+              }
+            }}
+          >
+            {/* FRONT — normal identity */}
+            <div className="portrait-face portrait-front cyber-photo-glitch">
+              <div className="portrait-border-glow" />
+              <img
+                src={profileData.avatarUrl}
+                alt={profileData.name}
+                className="portrait-image"
+                loading="eager"
+              />
+              <div className="scanlines-overlay" />
+              <div className="portrait-badge">
+                <Sparkles size={14} className="badge-icon" />
+                <span>Personal Engineering Story</span>
+              </div>
+            </div>
+
+            {/* BACK — intense identity */}
+            <div className="portrait-face portrait-back">
+              <div className="back-scanlines" />
+              <div className="back-corner back-corner-tl" />
+              <div className="back-corner back-corner-tr" />
+              <div className="back-corner back-corner-bl" />
+              <div className="back-corner back-corner-br" />
+              <div className="back-content">
+                <span className="back-tag">// intense mode</span>
+                <h3 className="back-name">Fajar<br />Fristiawan</h3>
+                <span className="back-role">Software Engineer</span>
+                <div className="back-medal">
+                  <Award size={18} />
+                  <span>Perak — KRON 2025</span>
+                </div>
+                <p className="back-quote">"Tekanan jadi bahan bakar."</p>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -290,27 +328,149 @@ export const Hero: React.FC = () => {
 
         .hero-image-container {
           display: flex;
-          justify-content: flex-end;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: center;
           position: relative;
+          perspective: 1100px;
+          gap: 0.6rem;
         }
 
         @media (max-width: 968px) {
           .hero-image-container {
-            justify-content: center;
+            align-items: center;
           }
         }
 
-        /* Cyber RGB Photo Glitch Frame */
-        .portrait-wrapper {
-          position: relative;
+        .flip-hint {
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.12em;
+          color: var(--color-accent);
+          opacity: 0.65;
+          transition: color 0.5s ease, opacity 0.3s ease;
+        }
+
+        .portrait-flip {
           width: 100%;
           max-width: 380px;
           aspect-ratio: 1 / 1.1;
+          position: relative;
+          transform-style: preserve-3d;
+          transition: transform 0.75s cubic-bezier(0.4, 0.2, 0.2, 1);
+          cursor: pointer;
+        }
+
+        .portrait-flip.is-flipped {
+          transform: rotateY(180deg);
+        }
+
+        .portrait-flip:focus-visible {
+          outline: 2px solid var(--color-accent);
+          outline-offset: 5px;
+          border-radius: 18px;
+        }
+
+        .portrait-face {
+          position: absolute;
+          inset: 0;
           border-radius: 16px;
           overflow: hidden;
-          box-shadow: var(--shadow-subtle);
           border: 1px solid var(--border-medium);
           background-color: var(--bg-card);
+          box-shadow: var(--shadow-subtle);
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+        }
+
+        .portrait-back {
+          transform: rotateY(180deg);
+          display: flex;
+          align-items: flex-end;
+          background:
+            radial-gradient(ellipse at center, transparent 30%, rgba(120, 20, 0, 0.45) 100%),
+            linear-gradient(160deg, #14060a 0%, #0c0407 100%);
+          border-color: rgba(255, 85, 0, 0.35);
+        }
+
+        .back-scanlines {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
+          background-size: 100% 4px;
+          opacity: 0.35;
+          z-index: 2;
+        }
+
+        .back-corner {
+          position: absolute;
+          width: 34px;
+          height: 34px;
+          z-index: 5;
+        }
+
+        .back-corner-tl { top: 0; left: 0; border-top: 2px solid rgba(255, 85, 0, 0.6); border-left: 2px solid rgba(255, 85, 0, 0.6); border-top-left-radius: 16px; }
+        .back-corner-tr { top: 0; right: 0; border-top: 2px solid rgba(255, 85, 0, 0.45); border-right: 2px solid rgba(255, 85, 0, 0.45); border-top-right-radius: 16px; }
+        .back-corner-bl { bottom: 0; left: 0; border-bottom: 2px solid rgba(255, 85, 0, 0.45); border-left: 2px solid rgba(255, 85, 0, 0.45); border-bottom-left-radius: 16px; }
+        .back-corner-br { bottom: 0; right: 0; border-bottom: 2px solid rgba(255, 85, 0, 0.6); border-right: 2px solid rgba(255, 85, 0, 0.6); border-bottom-right-radius: 16px; }
+
+        .back-content {
+          position: relative;
+          z-index: 4;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          width: 100%;
+        }
+
+        .back-tag {
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.12em;
+          color: rgba(255, 107, 133, 0.7);
+        }
+
+        .back-name {
+          font-family: var(--font-heading);
+          font-weight: 800;
+          font-size: 1.85rem;
+          line-height: 1;
+          color: #ff6a00;
+          text-shadow: 0 0 25px rgba(255, 85, 0, 0.5);
+          letter-spacing: -0.02em;
+        }
+
+        .back-role {
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          letter-spacing: 0.08em;
+          color: rgba(255, 200, 170, 0.8);
+          text-transform: uppercase;
+        }
+
+        .back-medal {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-top: 0.75rem;
+          padding: 0.5rem 0.85rem;
+          border-radius: 8px;
+          background: rgba(255, 85, 0, 0.12);
+          border: 1px solid rgba(255, 85, 0, 0.35);
+          color: #ff8a3d;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          font-weight: 600;
+          width: fit-content;
+        }
+
+        .back-quote {
+          margin-top: 0.85rem;
+          font-style: italic;
+          font-size: 0.85rem;
+          color: rgba(255, 180, 150, 0.7);
         }
 
         .portrait-image {

@@ -6,12 +6,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Registered custom properties enable smooth global color transition
+   (mirrors nirvan.my.id @property + data-mode approach) */
+@property --color-accent { syntax: "<color>"; inherits: true; initial-value: #0D9488; }
+@property --color-accent-glow { syntax: "<color>"; inherits: true; initial-value: rgba(13, 148, 136, 0.25); }
+
 :root {
-  /* Dynamic Emotion Color Variables */
-  --intensity-ratio: 0;
+  /* Emotion Color Tokens */
+  --color-accent: #0D9488;
+  --color-accent-glow: rgba(13, 148, 136, 0.25);
   --color-accent-rgb: 13, 148, 136;
-  --color-accent: rgb(var(--color-accent-rgb));
-  --color-accent-glow: rgba(var(--color-accent-rgb), 0.25);
   --color-accent-intense: #FF5500;
 
   /* Typography */
@@ -77,6 +81,25 @@
 }
 
 /* --------------------------------------------------------------------------
+   INTENSE MODE — global emotion shift (teal → fiery orange)
+   Triggered by profile flip OR scroll into intense timeline moments.
+   Smooth global transition via @property on <html>.
+   -------------------------------------------------------------------------- */
+[data-mode="intense"] {
+  --color-accent: #FF5500;
+  --color-accent-glow: rgba(255, 85, 0, 0.30);
+  --color-accent-rgb: 255, 85, 0;
+}
+
+[data-theme="dark"][data-mode="intense"] {
+  --bg-primary: #0E0907;
+  --bg-secondary: #15100C;
+  --bg-tertiary: #1E1812;
+  --bg-card: #14100B;
+  --bg-card-hover: #1B140E;
+}
+
+/* --------------------------------------------------------------------------
    BASE STYLES & RESET
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
@@ -89,6 +112,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  transition: --color-accent 0.7s ease, --color-accent-glow 0.7s ease;
 }
 
 body {
@@ -386,6 +410,20 @@ ul, ol {
 .ambient-intense .ambient-bg__glow--a { background: rgba(200, 80, 0, 0.13); }
 .ambient-intense .ambient-bg__glow--b { background: rgba(180, 60, 0, 0.09); }
 .ambient-intense .ambient-bg__glow--c { background: rgba(220, 100, 0, 0.07); }
+
+/* Intense state — warm ambient base + grid (dark only) */
+[data-theme="dark"][data-mode="intense"] .ambient-bg__base {
+  background:
+    radial-gradient(120% 90% at 15% 0, rgba(120, 40, 0, 0.20) 0%, transparent 55%),
+    radial-gradient(90% 70% at 90% 85%, rgba(90, 25, 0, 0.14) 0%, transparent 50%),
+    linear-gradient(165deg, #0c0604 0%, #0a0503 45%, #080402 100%);
+}
+
+[data-mode="intense"] .ambient-bg__grid {
+  background-image:
+    linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
+}
 
 /* Light mode — softer teal orbs readable on bright base */
 [data-theme="light"] .ambient-bg__glow--a { background: rgba(13, 148, 136, 0.10); }
