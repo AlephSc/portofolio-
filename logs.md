@@ -1,5 +1,11 @@
 # Session logs — Portfolio
 
+## 2026-07-31 — Title + meta → Muhammad Fajar Fristiawan
+
+- `index.html`: title, description, keywords, author, og:* diganti dari Aditya Pratama ke **Muhammad Fajar Fristiawan — Portofolio**
+
+---
+
 ## 2026-07-31 — Polish: auto color, timeline fix, edu pipe, server hobby
 
 - Hapus bar "Catatan Emosi Visual" di Timeline

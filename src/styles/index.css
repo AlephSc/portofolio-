@@ -28,6 +28,22 @@
   --transition-color-shift: color 0.7s ease, background-color 0.7s ease, border-color 0.7s ease, box-shadow 0.7s ease;
 }
 
+/* Global soft transition so accent-driven UI (tags, buttons, borders) follows mode */
+.portfolio-app-root,
+.portfolio-app-root * {
+  /* only color-related; avoid animating layout */
+}
+.section-label,
+.section-title,
+.tag,
+.tag-accent,
+.btn-primary,
+.brand-dot,
+.nav-link-active,
+.active-line {
+  transition: color 0.7s ease, background-color 0.7s ease, border-color 0.7s ease, box-shadow 0.7s ease;
+}
+
 /* --------------------------------------------------------------------------
    DARK MODE (Default)
    -------------------------------------------------------------------------- */
@@ -91,11 +107,6 @@
   --border-active: #FF5500;
   --timeline-line-active: #FF5500;
   --shadow-glow: 0 0 30px -5px rgba(255, 85, 0, 0.35);
-}
-
-/* Explicit blue base when not intense (ensures clean reverse transition) */
-[data-theme="dark"]:not([data-mode="intense"]) {
-  /* accent already blue from :root; keep bg cool */
 }
 
 [data-theme="dark"][data-mode="intense"] {
@@ -175,6 +186,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  transition: color 0.7s ease;
 }
 
 p {
@@ -387,16 +399,16 @@ ul, ol {
 
 [data-theme="light"] .ambient-bg__base {
   background:
-    radial-gradient(120% 90% at 15% 0, rgba(13, 148, 136, 0.08) 0%, transparent 55%),
-    radial-gradient(90% 70% at 90% 85%, rgba(13, 148, 136, 0.05) 0%, transparent 50%),
+    radial-gradient(120% 90% at 15% 0, rgba(59, 130, 246, 0.10) 0%, transparent 55%),
+    radial-gradient(90% 70% at 90% 85%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
     linear-gradient(165deg, #f8fafc 0%, #f1f5f9 45%, #e2e8f0 100%);
 }
 
 .ambient-bg__grid {
   opacity: 0.22;
   background-image:
-    linear-gradient(rgba(90, 140, 200, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(90, 140, 200, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(59, 130, 246, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.09) 1px, transparent 1px);
   background-size: 72px 72px;
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
@@ -408,8 +420,8 @@ ul, ol {
 [data-theme="light"] .ambient-bg__grid {
   opacity: 0.12;
   background-image:
-    linear-gradient(rgba(13, 148, 136, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(13, 148, 136, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(59, 130, 246, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.10) 1px, transparent 1px);
 }
 
 /* Subtle PCB / electrical fill (CSS dots + short traces) */
@@ -419,10 +431,10 @@ ul, ol {
   opacity: 0.14;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(13, 148, 136, 0.35) 1.2px, transparent 1.5px),
-    radial-gradient(circle at 70% 55%, rgba(13, 148, 136, 0.3) 1.2px, transparent 1.5px),
-    radial-gradient(circle at 45% 80%, rgba(13, 148, 136, 0.28) 1px, transparent 1.4px),
-    radial-gradient(circle at 85% 20%, rgba(13, 148, 136, 0.25) 1px, transparent 1.4px);
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.4) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 70% 55%, rgba(59, 130, 246, 0.32) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 45% 80%, rgba(37, 99, 235, 0.28) 1px, transparent 1.4px),
+    radial-gradient(circle at 85% 20%, rgba(59, 130, 246, 0.25) 1px, transparent 1.4px);
   background-size: 100% 100%;
   -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000 20%, transparent 75%);
   mask-image: radial-gradient(70% 60% at 50% 40%, #000 20%, transparent 75%);
@@ -444,32 +456,34 @@ ul, ol {
 
 .ambient-bg__traces .trace-line {
   fill: none;
-  stroke: rgba(13, 148, 136, 0.55);
+  stroke: rgba(59, 130, 246, 0.55);
   stroke-width: 1.25;
   stroke-linecap: square;
   vector-effect: non-scaling-stroke;
+  transition: stroke 0.7s ease;
 }
 
 .ambient-bg__traces .trace-node {
-  fill: rgba(13, 148, 136, 0.75);
-  stroke: rgba(13, 148, 136, 0.35);
+  fill: rgba(59, 130, 246, 0.75);
+  stroke: rgba(59, 130, 246, 0.35);
   stroke-width: 1;
+  transition: fill 0.7s ease, stroke 0.7s ease;
 }
 
 [data-theme="light"] .ambient-bg__circuit { opacity: 0.08; }
 [data-theme="light"] .ambient-bg__traces { opacity: 0.1; }
-[data-theme="light"] .ambient-bg__traces .trace-line { stroke: rgba(13, 100, 90, 0.4); }
-[data-theme="light"] .ambient-bg__traces .trace-node { fill: rgba(13, 100, 90, 0.55); }
+[data-theme="light"] .ambient-bg__traces .trace-line { stroke: rgba(37, 99, 235, 0.45); }
+[data-theme="light"] .ambient-bg__traces .trace-node { fill: rgba(37, 99, 235, 0.55); }
 
 .ambient-bg__glow {
   filter: blur(100px);
   border-radius: 50%;
   position: absolute;
-  transition: background 1.2s ease;
+  transition: background 0.8s ease;
 }
 
 .ambient-bg__glow--a {
-  background: rgba(13, 148, 136, 0.11);
+  background: rgba(59, 130, 246, 0.14);
   width: min(50vw, 480px);
   height: min(50vw, 480px);
   animation: 28s ease-in-out infinite alternate ambient-drift-a;
@@ -478,7 +492,7 @@ ul, ol {
 }
 
 .ambient-bg__glow--b {
-  background: rgba(10, 100, 90, 0.08);
+  background: rgba(37, 99, 235, 0.10);
   width: min(42vw, 400px);
   height: min(42vw, 400px);
   animation: 34s ease-in-out infinite alternate ambient-drift-b;
@@ -487,7 +501,7 @@ ul, ol {
 }
 
 .ambient-bg__glow--c {
-  background: rgba(20, 120, 110, 0.06);
+  background: rgba(96, 165, 250, 0.08);
   width: min(36vw, 340px);
   height: min(36vw, 340px);
   animation: 32s ease-in-out infinite alternate ambient-drift-c;
@@ -537,10 +551,10 @@ ul, ol {
   stroke: rgba(255, 85, 0, 0.4);
 }
 
-/* Light mode — softer teal orbs readable on bright base */
-[data-theme="light"] .ambient-bg__glow--a { background: rgba(13, 148, 136, 0.10); }
-[data-theme="light"] .ambient-bg__glow--b { background: rgba(13, 148, 136, 0.07); }
-[data-theme="light"] .ambient-bg__glow--c { background: rgba(13, 148, 136, 0.05); }
+/* Light mode — softer blue orbs readable on bright base */
+[data-theme="light"] .ambient-bg__glow--a { background: rgba(59, 130, 246, 0.12); }
+[data-theme="light"] .ambient-bg__glow--b { background: rgba(37, 99, 235, 0.08); }
+[data-theme="light"] .ambient-bg__glow--c { background: rgba(96, 165, 250, 0.06); }
 
 .ambient-bg__vignette {
   background: radial-gradient(95% 85% at 50% 28%, transparent 0%, rgba(5, 7, 14, 0.4) 72%, rgba(4, 6, 12, 0.82) 100%);
