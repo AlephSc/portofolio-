@@ -1,8 +1,32 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Copy, Check, MapPin, Send } from 'lucide-react';
+import { Mail, Copy, Check, MapPin, Send, Phone } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 import { profileData } from '../data/profile';
+
+function SocialPlatformIcon({ platform }: { platform: string }) {
+  if (platform === 'GitHub') return <GithubIcon size={20} />;
+  if (platform === 'LinkedIn') return <LinkedinIcon size={20} />;
+  if (platform === 'Email') return <Mail size={20} />;
+  if (platform === 'WhatsApp') return <Phone size={20} />;
+  if (platform === 'Instagram') {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.75" />
+        <circle cx="12" cy="12" r="4.25" stroke="currentColor" strokeWidth="1.75" />
+        <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor" />
+      </svg>
+    );
+  }
+  return <Mail size={20} />;
+}
+
+function formatSocialUsername(platform: string, username: string) {
+  if (platform === 'Email' || platform === 'WhatsApp') return username;
+  if (platform === 'Instagram') return `@${username.replace(/^@/, '')}`;
+  if (platform === 'GitHub') return username;
+  return `@${username}`;
+}
 
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -79,12 +103,12 @@ export const Contact: React.FC = () => {
                     rel="noopener noreferrer"
                     className="social-btn"
                   >
-                    {soc.platform === 'GitHub' && <GithubIcon size={20} />}
-                    {soc.platform === 'LinkedIn' && <LinkedinIcon size={20} />}
-                    {soc.platform === 'Email' && <Mail size={20} />}
+                    <SocialPlatformIcon platform={soc.platform} />
                     <div className="social-text">
                       <span className="social-platform">{soc.platform}</span>
-                      <span className="social-username">@{soc.username}</span>
+                      <span className="social-username">
+                        {formatSocialUsername(soc.platform, soc.username)}
+                      </span>
                     </div>
                   </a>
                 ))}

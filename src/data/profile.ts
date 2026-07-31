@@ -17,6 +17,8 @@ export const profileData: ProfileData = {
   ],
   socials: [
     { platform: "GitHub", url: "https://github.com/AlephSc", username: "AlephSc" },
+    { platform: "WhatsApp", url: "https://wa.me/6281515135960", username: "081515135960" },
+    { platform: "Instagram", url: "https://instagram.com/alepjir", username: "alepjir" },
     { platform: "Email", url: "mailto:alephsc25@gmail.com", username: "alephsc25@gmail.com" }
   ],
   contactEmail: "alephsc25@gmail.com",

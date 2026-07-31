@@ -1,5 +1,13 @@
 # Session logs — Portfolio
 
+## 2026-07-31 — Footer + kontak lengkap
+
+- Footer: GitHub AlephSc (link), WhatsApp 081515135960 (wa.me), IG @alepjir, email alephsc25@gmail.com
+- `profile.socials` diperluas (Contact section ikut)
+- Build/HMR via dev server
+
+---
+
 ## 2026-07-31 — Title + meta → Muhammad Fajar Fristiawan
 
 - `index.html`: title, description, keywords, author, og:* diganti dari Aditya Pratama ke **Muhammad Fajar Fristiawan — Portofolio**
