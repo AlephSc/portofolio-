@@ -2,7 +2,7 @@ import React from 'react';
 
 export const TechMarquee: React.FC = () => {
   const line1 = [
-    'HTML', 'CSS', 'C++', 'Python', 'Lua', 'Debugging',
+    'HTML', 'CSS', 'C++', 'Python', 'Lua Scripting', 'Debugging',
     'Problem Solving', 'AI Prompt Engineering', 'Hardware Basics',
     'Elektronika', 'Server', 'Pemrograman',
   ];

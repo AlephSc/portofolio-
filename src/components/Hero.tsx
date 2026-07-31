@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, Compass, Sparkles, Activity, Award } from 'lucide-react';
 import { profileData } from '../data/profile';
 
-const ROLES = ['Software Engineer', 'Lua Programmer', 'Hardware Enthusiast', 'AI Prompt Engineer'];
+const ROLES = ['Software Engineer', 'Lua Scripting', 'Hardware Enthusiast', 'AI Prompt Engineer'];
 
 export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isFlipped, onFlip }) => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
@@ -96,62 +96,85 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           </div>
         </motion.div>
 
-        {/* Right Column: Flippable Profile Card */}
+        {/* Right Column: Dual-identity 3D flip — Fajar (blue) / Aleph (orange)
+            Note: motion only fades opacity (no scale/transform) so CSS preserve-3d is not flattened. */}
         <motion.div
           className="hero-image-container"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="flip-hint">
-            {isFlipped ? '// mode intense · oranye' : '// mode focus · biru · klik flip'}
-          </span>
-
-          <div
-            className={`portrait-flip ${isFlipped ? 'is-flipped' : ''}`}
-            onClick={onFlip}
-            role="button"
-            tabIndex={0}
-            aria-label="Balik kartu profil"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onFlip();
+          <div className="portrait-scene">
+            <div
+              className={`portrait-flip ${isFlipped ? 'is-flipped' : ''}`}
+              onClick={onFlip}
+              role="button"
+              tabIndex={0}
+              aria-label={
+                isFlipped
+                  ? 'Tampilkan identitas Fajar'
+                  : 'Tampilkan identitas Aleph'
               }
-            }}
-          >
-            {/* FRONT — normal identity */}
-            <div className="portrait-face portrait-front cyber-photo-glitch">
-              <div className="portrait-border-glow" />
-              <img
-                src={profileData.avatarUrl}
-                alt={profileData.name}
-                className="portrait-image"
-                loading="eager"
-              />
-              <div className="scanlines-overlay" />
-              <div className="portrait-badge">
-                <Sparkles size={14} className="badge-icon" />
-                <span>Personal Engineering Story</span>
-              </div>
-            </div>
-
-            {/* BACK — intense identity */}
-            <div className="portrait-face portrait-back">
-              <div className="back-scanlines" />
-              <div className="back-corner back-corner-tl" />
-              <div className="back-corner back-corner-tr" />
-              <div className="back-corner back-corner-bl" />
-              <div className="back-corner back-corner-br" />
-              <div className="back-content">
-                <span className="back-tag">// intense · hardware</span>
-                <h3 className="back-name">Fajar<br />Fristiawan</h3>
-                <span className="back-role">Elektronika · Server · Code</span>
-                <div className="back-medal">
-                  <Award size={18} />
-                  <span>Perak — KRON 2025</span>
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onFlip();
+                }
+              }}
+            >
+              {/* FRONT — Fajar (blue / focus) */}
+              <div className="portrait-face portrait-front cyber-photo-glitch">
+                <div className="portrait-border-glow" />
+                <img
+                  src={profileData.avatarUrl}
+                  alt={profileData.name}
+                  className="portrait-image"
+                  loading="eager"
+                />
+                <div className="scanlines-overlay" />
+                <div className="portrait-badge portrait-badge-front">
+                  <Sparkles size={14} className="badge-icon" />
+                  <span className="badge-name">{profileData.name}</span>
                 </div>
-                <p className="back-quote">"Dari rangkaian ke logika — tekanan jadi bahan bakar."</p>
+              </div>
+
+              {/* BACK — Aleph (orange / intense): monogram A without crossbar */}
+              <div className="portrait-face portrait-back">
+                <div className="back-scanlines" />
+                <div className="back-corner back-corner-tl" />
+                <div className="back-corner back-corner-tr" />
+                <div className="back-corner back-corner-bl" />
+                <div className="back-corner back-corner-br" />
+
+                <div className="aleph-monogram" aria-hidden="true">
+                  <svg viewBox="0 0 100 110" className="aleph-a-svg">
+                    <path
+                      d="M 50 8 L 12 102 M 50 8 L 88 102"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="11"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <div className="aleph-ring" />
+                </div>
+
+                <div className="back-content">
+                  <h3 className="back-name">
+                    {profileData.alterEgo?.name ?? 'Aleph'}
+                  </h3>
+                  <span className="back-role">
+                    {profileData.alterEgo?.role ?? 'Elektronika · Server · Code'}
+                  </span>
+                  <div className="back-medal">
+                    <Award size={18} />
+                    <span>Perak — KRON 2025</span>
+                  </div>
+                  {profileData.alterEgo?.quote && (
+                    <p className="back-quote">"{profileData.alterEgo.quote}"</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -332,7 +355,6 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           align-items: flex-end;
           justify-content: center;
           position: relative;
-          perspective: 1100px;
           gap: 0.6rem;
         }
 
@@ -342,32 +364,50 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           }
         }
 
-        .flip-hint {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          color: var(--color-accent);
-          opacity: 0.65;
-          transition: color 0.5s ease, opacity 0.3s ease;
+        /* 3D scene — perspective lives here, NOT on a transformed Framer parent */
+        .portrait-scene {
+          width: 100%;
+          max-width: 380px;
+          perspective: 1600px;
+          perspective-origin: 50% 45%;
         }
 
         .portrait-flip {
           width: 100%;
-          max-width: 380px;
           aspect-ratio: 1 / 1.1;
           position: relative;
           transform-style: preserve-3d;
-          transition: transform 0.75s cubic-bezier(0.4, 0.2, 0.2, 1);
+          -webkit-transform-style: preserve-3d;
+          transform: rotateY(0deg) translateZ(0);
+          transition:
+            transform 0.95s cubic-bezier(0.22, 0.61, 0.36, 1),
+            box-shadow 0.95s ease;
           cursor: pointer;
+          border-radius: 16px;
+          will-change: transform;
+          /* soft ground shadow that stays under the card */
+          filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+        }
+
+        .portrait-flip:hover:not(.is-flipped) {
+          transform: rotateY(-8deg) translateZ(12px) scale(1.02);
         }
 
         .portrait-flip.is-flipped {
-          transform: rotateY(180deg);
+          transform: rotateY(180deg) translateZ(0);
+        }
+
+        .portrait-flip.is-flipped:hover {
+          transform: rotateY(172deg) translateZ(12px) scale(1.02);
+        }
+
+        .portrait-flip:active {
+          transition-duration: 0.35s;
         }
 
         .portrait-flip:focus-visible {
           outline: 2px solid var(--color-accent);
-          outline-offset: 5px;
+          outline-offset: 6px;
           border-radius: 18px;
         }
 
@@ -378,19 +418,56 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           overflow: hidden;
           border: 1px solid var(--border-medium);
           background-color: var(--bg-card);
-          box-shadow: var(--shadow-subtle);
+          box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+            0 12px 40px rgba(0, 0, 0, 0.35);
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
+          transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
+        }
+
+        /* Front sits slightly forward so edge-on flip reads as a real card */
+        .portrait-front {
+          transform: rotateY(0deg) translateZ(1px);
+          -webkit-transform: rotateY(0deg) translateZ(1px);
         }
 
         .portrait-back {
-          transform: rotateY(180deg);
+          transform: rotateY(180deg) translateZ(1px);
+          -webkit-transform: rotateY(180deg) translateZ(1px);
           display: flex;
-          align-items: flex-end;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
           background:
-            radial-gradient(ellipse at center, transparent 30%, rgba(120, 20, 0, 0.45) 100%),
-            linear-gradient(160deg, #14060a 0%, #0c0407 100%);
-          border-color: rgba(255, 85, 0, 0.35);
+            radial-gradient(ellipse 70% 55% at 50% 35%, rgba(255, 85, 0, 0.18) 0%, transparent 65%),
+            linear-gradient(165deg, #1a0804 0%, #0c0402 55%, #080201 100%);
+          border-color: rgba(255, 85, 0, 0.4);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .portrait-flip,
+          .portrait-flip.is-flipped,
+          .portrait-flip:hover:not(.is-flipped),
+          .portrait-flip.is-flipped:hover {
+            transition: none;
+            transform: none;
+          }
+          .portrait-flip.is-flipped .portrait-front {
+            visibility: hidden;
+          }
+          .portrait-flip:not(.is-flipped) .portrait-back {
+            visibility: hidden;
+          }
+          .portrait-front,
+          .portrait-back {
+            transform: none;
+            position: absolute;
+          }
+          .portrait-flip.is-flipped .portrait-back {
+            transform: none;
+          }
         }
 
         .back-scanlines {
@@ -399,7 +476,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           pointer-events: none;
           background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
           background-size: 100% 4px;
-          opacity: 0.35;
+          opacity: 0.3;
           z-index: 2;
         }
 
@@ -415,30 +492,60 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
         .back-corner-bl { bottom: 0; left: 0; border-bottom: 2px solid rgba(255, 85, 0, 0.45); border-left: 2px solid rgba(255, 85, 0, 0.45); border-bottom-left-radius: 16px; }
         .back-corner-br { bottom: 0; right: 0; border-bottom: 2px solid rgba(255, 85, 0, 0.6); border-right: 2px solid rgba(255, 85, 0, 0.6); border-bottom-right-radius: 16px; }
 
+        /* Open-A monogram (no crossbar) — Aleph identity */
+        .aleph-monogram {
+          position: absolute;
+          top: 12%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(52%, 180px);
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 3;
+          color: #ff6a00;
+        }
+        .aleph-a-svg {
+          width: 78%;
+          height: 78%;
+          filter:
+            drop-shadow(0 0 12px rgba(255, 85, 0, 0.75))
+            drop-shadow(0 0 28px rgba(255, 100, 20, 0.45));
+        }
+        .aleph-ring {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 1.5px solid rgba(255, 85, 0, 0.35);
+          box-shadow:
+            0 0 24px rgba(255, 85, 0, 0.25),
+            inset 0 0 30px rgba(255, 85, 0, 0.08);
+          animation: aleph-pulse 3.2s ease-in-out infinite;
+        }
+        @keyframes aleph-pulse {
+          0%, 100% { box-shadow: 0 0 18px rgba(255, 85, 0, 0.2), inset 0 0 20px rgba(255, 85, 0, 0.06); }
+          50% { box-shadow: 0 0 32px rgba(255, 85, 0, 0.4), inset 0 0 36px rgba(255, 85, 0, 0.12); }
+        }
+
         .back-content {
           position: relative;
           z-index: 4;
-          padding: 1.5rem;
+          padding: 1.25rem 1.5rem 1.5rem;
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          gap: 0.35rem;
           width: 100%;
-        }
-
-        .back-tag {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          color: rgba(255, 107, 133, 0.7);
+          align-items: flex-start;
         }
 
         .back-name {
           font-family: var(--font-heading);
           font-weight: 800;
-          font-size: 1.85rem;
+          font-size: 2rem;
           line-height: 1;
           color: #ff6a00;
-          text-shadow: 0 0 25px rgba(255, 85, 0, 0.5);
+          text-shadow: 0 0 25px rgba(255, 85, 0, 0.55);
           letter-spacing: -0.02em;
         }
 
@@ -446,7 +553,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           font-family: var(--font-mono);
           font-size: 0.72rem;
           letter-spacing: 0.08em;
-          color: rgba(255, 200, 170, 0.8);
+          color: rgba(255, 200, 170, 0.85);
           text-transform: uppercase;
         }
 
@@ -454,7 +561,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          margin-top: 0.75rem;
+          margin-top: 0.65rem;
           padding: 0.5rem 0.85rem;
           border-radius: 8px;
           background: rgba(255, 85, 0, 0.12);
@@ -467,10 +574,11 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
         }
 
         .back-quote {
-          margin-top: 0.85rem;
+          margin-top: 0.65rem;
           font-style: italic;
           font-size: 0.85rem;
-          color: rgba(255, 180, 150, 0.7);
+          color: rgba(255, 180, 150, 0.75);
+          line-height: 1.4;
         }
 
         .portrait-image {
@@ -519,7 +627,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           bottom: 1rem;
           left: 1rem;
           right: 1rem;
-          padding: 0.6rem 1rem;
+          padding: 0.65rem 1rem;
           border-radius: 8px;
           background-color: rgba(10, 13, 18, 0.88);
           backdrop-filter: blur(10px);
@@ -528,14 +636,20 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          font-family: var(--font-mono);
-          font-size: 0.75rem;
+          font-family: var(--font-heading);
+          font-size: 0.85rem;
+          font-weight: 600;
           color: var(--text-primary);
           z-index: 4;
         }
 
+        .badge-name {
+          letter-spacing: -0.01em;
+        }
+
         .badge-icon {
           color: var(--color-accent);
+          flex-shrink: 0;
         }
       `}</style>
     </section>

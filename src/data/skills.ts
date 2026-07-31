@@ -10,7 +10,12 @@ export const skillsData: SkillCategory[] = [
       { name: 'CSS', level: 'Proficient', description: 'Layout, theming, dan presentasi visual responsif' },
       { name: 'C++', level: 'Proficient', description: 'Logika program, struktur data dasar, dan pemrograman berorientasi sistem' },
       { name: 'Python', level: 'Exploring', description: 'Scripting dan eksperimen — masih dalam tahap eksplorasi' },
-      { name: 'Lua', level: 'Advanced', description: 'Sintaks, tabel, metatables, dan alur logika yang rapi' },
+      {
+        name: 'Lua Scripting',
+        level: 'Advanced',
+        description:
+          'Fondasi dari scripting di game Growtopia (Executor Growlauncher) — dipelajari tanpa AI; sintaks, tabel, metatables, dan alur logika',
+      },
     ],
   },
   {

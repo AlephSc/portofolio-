@@ -16,7 +16,8 @@ export const hobbiesData: HobbyItem[] = [
   {
     id: 'hobby-programming',
     name: 'Pemrograman',
-    description: 'Menulis logika, memecah masalah, dan mengubah ide menjadi kode yang bisa dijalankan — dari Lua hingga script utilitas.',
+    description:
+      'Menulis logika, memecah masalah, dan mengubah ide menjadi kode — fondasi dari Lua Scripting (Growtopia / Growlauncher) hingga script utilitas.',
     iconName: 'code',
   },
 ];

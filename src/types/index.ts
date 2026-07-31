@@ -7,6 +7,16 @@ export interface ProfileData {
   shortBio: string;
   fullBio: string[];
   avatarUrl: string;
+  /** Second identity (orange / Aleph) — optional photo or logo mode */
+  alterEgo?: {
+    name: string;
+    role: string;
+    avatarUrl?: string;
+    /** When true, show monogram logo instead of photo */
+    useMonogram?: boolean;
+    monogram?: string;
+    quote?: string;
+  };
   stats: {
     label: string;
     value: string;

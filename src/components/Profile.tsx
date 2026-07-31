@@ -15,7 +15,7 @@ export const Profile: React.FC = () => {
     'Elektronika',
     'Server',
     'Pemrograman',
-    'Lua',
+    'Lua Scripting', 'Growtopia',
   ];
 
   const keywords = [

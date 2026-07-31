@@ -4,13 +4,20 @@ export const profileData: ProfileData = {
   name: "Muhammad Fajar Fristiawan",
   role: "Software Engineer",
   location: "Jombang, Jawa Timur",
-  shortBio: "Software Engineer yang suka membedah masalah — dari elektronika & hardware hingga server, Lua, dan rekayasa prompt AI. Ketajaman teknis terasah lewat kompetisi JHIC dan KRON.",
+  shortBio:
+    "Software Engineer dengan fondasi kuat dari Lua Scripting — dulu diasah lewat scripting di game Growtopia (Executor Growlauncher), tanpa AI. Kini fokusok pada elektronika, server, dan pemecahan masalah; terasah lewat kompetisi JHIC & KRON.",
   fullBio: [
-    "Saya seorang Software Engineer yang menikmati membedah masalah hingga ke akarnya. Di luar layar, saya sangat menyukai Elektronika, Server, dan Pemrograman — tiga hobi yang saling mengisi: hardware, infrastruktur, dan logika kode.",
-    "Dari menulis kode Lua hingga merancang prompt yang efektif untuk model AI, saya percaya pemahaman fondasi yang kuat adalah kunci setiap solusi yang tahan lama. Pengalaman kompetisi (Top 30 JHIC 1.0 dan medali Perak KRON) mengajarkan ketelitian, ketenangan di bawah tekanan, dan debugging yang sistematis."
+    "Saya seorang Software Engineer yang menikmati membedah masalah hingga ke akarnya. Dasar pemrograman saya lahir dari Lua Scripting: dulu saya belajar menulis script di game Growtopia menggunakan Executor Growlauncher — tanpa bantuan AI. Dari situ saya membangun fondasi logika, debugging, dan ketekunan yang masih saya bawa sampai sekarang.",
+    "Di luar layar, saya sangat menyukai Elektronika, Server, dan Pemrograman. Pengalaman kompetisi (Top 30 JHIC 1.0 dan medali Perak KRON) mengajarkan ketelitian, ketenangan di bawah tekanan, dan debugging yang sistematis."
   ],
-  // Filename baru memaksa bypass cache production (Vercel/CDN/browser)
   avatarUrl: "/fajar-avatar.jpg",
+  alterEgo: {
+    name: "Aleph",
+    role: "Elektronika · Server · Code",
+    useMonogram: true,
+    monogram: "A",
+    quote: "Dari rangkaian ke logika — tekanan jadi bahan bakar.",
+  },
   stats: [
     { label: "Kompetisi", value: "2", subtext: "JHIC & KRON" },
     { label: "JHIC 1.0", value: "Top 30", subtext: "Finalis" },
@@ -27,7 +34,7 @@ export const profileData: ProfileData = {
     "Elektronika",
     "Server",
     "Pemrograman",
-    "Lua",
+    "Lua Scripting",
     "HTML & CSS",
     "C++",
     "Hardware",
