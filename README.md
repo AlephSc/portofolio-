@@ -111,7 +111,7 @@ Untuk memperbarui konten, cukup edit file data bersangkutan:
 | Timeline & kompetisi | `src/data/experiences.ts` |
 | Daftar proyek | `src/data/projects.ts` |
 | Keahlian | `src/data/skills.ts` |
-| Foto profil | ganti `public/profile.jpg` |
+| Foto profil | ganti `public/fajar-avatar.jpg` |
 
 ---
 
