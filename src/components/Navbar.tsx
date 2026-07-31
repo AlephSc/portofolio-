@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Flame, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 import type { Theme } from '../types';
 import { profileData } from '../data/profile';
 
 interface NavbarProps {
   theme: Theme;
   onToggleTheme: () => void;
-  isIntense: boolean;
-  onToggleManualIntense: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
-  isIntense,
-  onToggleManualIntense,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -24,7 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
-      const sections = ['home', 'about', 'journey', 'projects', 'skills', 'contact'];
+      const sections = ['home', 'about', 'education', 'journey', 'projects', 'skills', 'contact'];
       const scrollPosition = window.scrollY + 200;
 
       for (const sectionId of sections) {
@@ -47,6 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navLinks = [
     { id: 'home', label: 'Utama' },
     { id: 'about', label: 'Profil' },
+    { id: 'education', label: 'Sekolah' },
     { id: 'journey', label: 'Perjalanan' },
     { id: 'projects', label: 'Proyek' },
     { id: 'skills', label: 'Keahlian' },
@@ -64,13 +61,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className={`navbar-root ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="container navbar-container">
-        {/* Brand Logo */}
         <button onClick={() => scrollToSection('home')} className="navbar-brand" aria-label="Go to Home">
           <span className="brand-dot" />
           <span className="brand-name">{profileData.name}</span>
         </button>
 
-        {/* Desktop Nav Links */}
         <nav className="navbar-menu-desktop">
           {navLinks.map(link => (
             <button
@@ -84,22 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        {/* Actions (Theme & Intensity Toggle) */}
         <div className="navbar-actions">
-          {/* Emotion / Intensity Mode Switch */}
-          <button
-            onClick={onToggleManualIntense}
-            className={`intensity-toggle-btn ${isIntense ? 'intensity-toggle-active' : ''}`}
-            title={isIntense ? 'State: Intense / Aggressive Growth (Orange)' : 'State: Normal / Focused'}
-            aria-label="Toggle Emotion Intensity Mode"
-          >
-            <Flame className="intensity-icon" size={16} />
-            <span className="intensity-label">
-              {isIntense ? 'Intense' : 'Focus'}
-            </span>
-          </button>
-
-          {/* Dark / Light Toggle */}
           <button
             onClick={onToggleTheme}
             className="theme-toggle-btn"
@@ -109,7 +89,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="mobile-menu-btn"
@@ -120,7 +99,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-menu-drawer">
           <div className="container mobile-menu-content">
@@ -161,6 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 1rem;
         }
 
         .navbar-brand {
@@ -168,10 +147,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           align-items: center;
           gap: 0.6rem;
           font-family: var(--font-heading);
-          font-size: 1.15rem;
+          font-size: 1.05rem;
           font-weight: 700;
           color: var(--text-primary);
           letter-spacing: -0.02em;
+          min-height: 44px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          white-space: nowrap;
         }
 
         .brand-dot {
@@ -181,15 +165,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           background-color: var(--color-accent);
           transition: var(--transition-color-shift);
           box-shadow: 0 0 10px var(--color-accent);
+          flex-shrink: 0;
         }
 
         .navbar-menu-desktop {
           display: flex;
           align-items: center;
-          gap: 2rem;
+          gap: 1.35rem;
+          flex-wrap: wrap;
+          justify-content: center;
         }
 
-        @media (max-width: 868px) {
+        @media (max-width: 1024px) {
           .navbar-menu-desktop {
             display: none;
           }
@@ -198,11 +185,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         .nav-link {
           position: relative;
           font-family: var(--font-heading);
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 500;
           color: var(--text-secondary);
           transition: color 0.2s ease;
-          padding: 0.25rem 0;
+          padding: 0.35rem 0;
+          min-height: 44px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
         }
 
         .nav-link:hover, .nav-link-active {
@@ -211,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         .active-line {
           position: absolute;
-          bottom: -4px;
+          bottom: 2px;
           left: 0;
           right: 0;
           height: 2px;
@@ -223,51 +216,22 @@ export const Navbar: React.FC<NavbarProps> = ({
         .navbar-actions {
           display: flex;
           align-items: center;
-          gap: 0.85rem;
-        }
-
-        .intensity-toggle-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0.4rem 0.75rem;
-          border-radius: 20px;
-          font-family: var(--font-mono);
-          font-size: 0.75rem;
-          font-weight: 600;
-          background-color: var(--bg-tertiary);
-          color: var(--text-secondary);
-          border: 1px solid var(--border-medium);
-          transition: all 0.3s ease;
-        }
-
-        .intensity-toggle-active {
-          background-color: rgba(255, 85, 0, 0.15);
-          color: #FF6A00;
-          border-color: #FF6A00;
-          box-shadow: 0 0 12px rgba(255, 85, 0, 0.3);
-        }
-
-        .intensity-icon {
-          transition: transform 0.3s ease;
-        }
-
-        .intensity-toggle-active .intensity-icon {
-          transform: scale(1.15);
-          color: #FF5500;
+          gap: 0.65rem;
+          flex-shrink: 0;
         }
 
         .theme-toggle-btn {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           border-radius: 8px;
           background-color: var(--bg-secondary);
           color: var(--text-primary);
           border: 1px solid var(--border-subtle);
           transition: all 0.2s ease;
+          cursor: pointer;
         }
 
         .theme-toggle-btn:hover {
@@ -279,15 +243,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           display: none;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           border-radius: 8px;
           background-color: var(--bg-secondary);
           color: var(--text-primary);
           border: 1px solid var(--border-subtle);
+          cursor: pointer;
         }
 
-        @media (max-width: 868px) {
+        @media (max-width: 1024px) {
           .mobile-menu-btn {
             display: flex;
           }
@@ -307,7 +272,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         .mobile-menu-content {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 0.35rem;
         }
 
         .mobile-nav-link {
@@ -316,7 +281,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           font-size: 1.1rem;
           font-weight: 600;
           color: var(--text-secondary);
-          padding: 0.5rem 0;
+          padding: 0.75rem 0;
+          min-height: 44px;
+          background: none;
+          border: none;
+          cursor: pointer;
         }
 
         .mobile-nav-active {

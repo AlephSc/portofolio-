@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, Compass, Sparkles, Activity, Award } from 'lucide-react';
 import { profileData } from '../data/profile';
 
-const ROLES = ['Software Engineer', 'Lua Programmer', 'AI Prompt Engineer'];
+const ROLES = ['Software Engineer', 'Lua Programmer', 'Hardware Enthusiast', 'AI Prompt Engineer'];
 
 export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isFlipped, onFlip }) => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
@@ -104,7 +104,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="flip-hint">
-            {isFlipped ? '// identitas intense' : '// klik untuk flip'}
+            {isFlipped ? '// mode intense · oranye' : '// mode focus · biru · klik flip'}
           </span>
 
           <div
@@ -144,14 +144,14 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
               <div className="back-corner back-corner-bl" />
               <div className="back-corner back-corner-br" />
               <div className="back-content">
-                <span className="back-tag">// intense mode</span>
+                <span className="back-tag">// intense · hardware</span>
                 <h3 className="back-name">Fajar<br />Fristiawan</h3>
-                <span className="back-role">Software Engineer</span>
+                <span className="back-role">Elektronika · Server · Code</span>
                 <div className="back-medal">
                   <Award size={18} />
                   <span>Perak — KRON 2025</span>
                 </div>
-                <p className="back-quote">"Tekanan jadi bahan bakar."</p>
+                <p className="back-quote">"Dari rangkaian ke logika — tekanan jadi bahan bakar."</p>
               </div>
             </div>
           </div>

@@ -1,36 +1,31 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { UserCheck, Code2, Cpu, Zap, ShieldCheck } from 'lucide-react';
+import { UserCheck, CircuitBoard, Server, Code2 } from 'lucide-react';
 import { profileData } from '../data/profile';
+import { hobbiesData } from '../data/hobbies';
+
+const hobbyIcons = {
+  circuit: <CircuitBoard size={20} />,
+  server: <Server size={20} />,
+  code: <Code2 size={20} />,
+} as const;
 
 export const Profile: React.FC = () => {
-  const corePrinciples = [
-    {
-      icon: <Code2 size={20} />,
-      title: 'Prinsip Kualitas Kode',
-      description: 'Menulis kode yang eksplisit, teruji, dan dapat dipahami oleh siapapun dalam tim. Mengutamakan kesederhanaan daripada keandalan semu.'
-    },
-    {
-      icon: <Cpu size={20} />,
-      title: 'Kesadaran Performa Hardware',
-      description: 'Memahami bahwa software berjalan di atas hardware nyata. Mengoptimalkan siklus CPU, penggunaan memori, dan latency I/O.'
-    },
-    {
-      icon: <Zap size={20} />,
-      title: 'Iterasi & Ketahanan',
-      description: 'Menghadapi tantangan rumit dan bug misterius dengan pendekatan hipotetis-empiris tanpa mudah menyerah.'
-    },
-    {
-      icon: <ShieldCheck size={20} />,
-      title: 'Keamanan & Aksesibilitas',
-      description: 'Membangun aplikasi web yang inklusif untuk semua pengguna dengan standar WCAG serta enkripsi data yang aman.'
-    }
+  const tags = profileData.tags ?? [
+    'Elektronika',
+    'Server',
+    'Pemrograman',
+    'Lua',
+  ];
+
+  const keywords = [
+    'elektronika', 'server', 'pemrograman', 'hardware', 'lua', 'ai',
+    'kompetisi', 'jhic', 'kron', 'debugging', 'fondasi',
   ];
 
   return (
     <section id="about" className="section profile-section">
       <div className="container">
-        {/* Section Header */}
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 30 }}
@@ -40,11 +35,11 @@ export const Profile: React.FC = () => {
         >
           <div className="section-label">
             <UserCheck size={16} />
-            <span>Tentang & Filosofi</span>
+            <span>Tentang & Minat</span>
           </div>
-          <h2 className="section-title">Profil & Cara Saya Bekerja</h2>
+          <h2 className="section-title">Profil & Hobi</h2>
           <p className="section-subtitle">
-            Kombinasi antara dedikasi teknis mendalam dan fokus pada nilai nyata solusi perangkat lunak.
+            Software, hardware, dan infrastruktur — tiga jalur yang saya nikmati di luar maupun di dalam kompetisi.
           </p>
         </motion.div>
 
@@ -55,17 +50,15 @@ export const Profile: React.FC = () => {
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Left Narrative Column */}
           <div className="profile-story-card">
-            <h3 className="story-heading">Latar Belakang & Filosofi</h3>
-            
+            <h3 className="story-heading">Latar Belakang</h3>
+
             {profileData.fullBio.map((paragraph, index) => (
               <p key={index} className="story-paragraph">
                 {paragraph.split(' ').map((word, wIdx) => {
-                  const isKeyword = [
-                    'perangkat', 'lunak', 'komputasi', 'performa', 'bersih', 'skala',
-                    're-rendering', 'optimasi', 'latency', 'dedikasi', 'arsitektur'
-                  ].some(kw => word.toLowerCase().includes(kw));
+                  const isKeyword = keywords.some(kw =>
+                    word.toLowerCase().includes(kw)
+                  );
 
                   if (isKeyword) {
                     return (
@@ -79,25 +72,24 @@ export const Profile: React.FC = () => {
               </p>
             ))}
 
-            {/* Quick Skill Tags Summary */}
             <div className="profile-tags-group">
-              <span className="tag tag-accent">Full-Stack Engineering</span>
-              <span className="tag">Systems Performance</span>
-              <span className="tag">Clean Architecture</span>
-              <span className="tag">TypeScript Ecosystem</span>
-              <span className="tag">Event-Driven Design</span>
+              {tags.map((tag, i) => (
+                <span key={tag} className={i === 0 ? 'tag tag-accent' : 'tag'}>
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Right Core Principles Column */}
           <div className="profile-principles-list">
-            {corePrinciples.map((item, idx) => (
-              <div key={idx} className="principle-card">
+            <h3 className="hobbies-heading">Hobi yang Saya Tekuni</h3>
+            {hobbiesData.map((item) => (
+              <div key={item.id} className="principle-card">
                 <div className="principle-icon-wrapper">
-                  {item.icon}
+                  {item.iconName ? hobbyIcons[item.iconName] : <Code2 size={20} />}
                 </div>
                 <div className="principle-content">
-                  <h4 className="principle-title">{item.title}</h4>
+                  <h4 className="principle-title">{item.name}</h4>
                   <p className="principle-description">{item.description}</p>
                 </div>
               </div>
@@ -133,16 +125,19 @@ export const Profile: React.FC = () => {
           box-shadow: var(--shadow-subtle);
         }
 
-        .story-heading {
-          font-size: 1.5rem;
+        .story-heading,
+        .hobbies-heading {
+          font-size: 1.35rem;
           font-weight: 700;
           color: var(--text-primary);
           margin-bottom: 1.25rem;
           position: relative;
           padding-bottom: 0.75rem;
+          font-family: var(--font-heading);
         }
 
-        .story-heading::after {
+        .story-heading::after,
+        .hobbies-heading::after {
           content: '';
           position: absolute;
           bottom: 0;
@@ -178,13 +173,13 @@ export const Profile: React.FC = () => {
         .profile-principles-list {
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1.1rem;
         }
 
         .principle-card {
           display: flex;
           gap: 1.25rem;
-          padding: 1.5rem;
+          padding: 1.35rem 1.5rem;
           background-color: var(--bg-card);
           border: 1px solid var(--border-subtle);
           border-radius: 12px;
@@ -214,6 +209,7 @@ export const Profile: React.FC = () => {
           font-weight: 700;
           color: var(--text-primary);
           margin-bottom: 0.35rem;
+          font-family: var(--font-heading);
         }
 
         .principle-description {

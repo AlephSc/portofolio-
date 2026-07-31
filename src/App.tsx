@@ -7,6 +7,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TechMarquee } from './components/TechMarquee';
 import { Profile } from './components/Profile';
+import { Education } from './components/Education';
 import { Timeline } from './components/Timeline';
 import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
@@ -20,29 +21,24 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="portfolio-app-root">
-        {/* Ambient background with floating glowing orbs, noise grain & cyber grid */}
         <AmbientBackground isIntense={isIntense} />
 
-        {/* Navigation Header */}
         <Navbar
           theme={theme}
           onToggleTheme={toggleTheme}
-          isIntense={isIntense}
-          onToggleManualIntense={toggleManualIntense}
         />
 
-        {/* Main Content Sections */}
         <main style={{ position: 'relative', zIndex: 10 }}>
           <Hero isFlipped={manualIntense} onFlip={toggleManualIntense} />
           <TechMarquee />
           <Profile />
+          <Education />
           <Timeline />
           <Projects />
           <Skills />
           <Contact />
         </main>
 
-        {/* Footer */}
         <Footer />
       </div>
     </MotionConfig>

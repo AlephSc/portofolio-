@@ -2,15 +2,15 @@ import React from 'react';
 
 export const TechMarquee: React.FC = () => {
   const line1 = [
-    'React 18', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'WebSockets',
-    'Vite', 'Docker', 'Clean Architecture', 'Event-Driven Systems', 'Performance Profiling',
-    'REST APIs', 'GraphQL', 'Tailwind CSS', 'Linux System Admin'
+    'HTML', 'CSS', 'C++', 'Python', 'Lua', 'Debugging',
+    'Problem Solving', 'AI Prompt Engineering', 'Hardware Basics',
+    'Elektronika', 'Server', 'Pemrograman',
   ];
 
   const line2 = [
-    'Sub-50ms Latency', 'WCAG AAA Accessibility', 'Micro-Frontends', 'State Machines',
-    'Concurrency & Streams', 'CI/CD Pipelines', 'Sliding Window Rate Limiter',
-    'Sliding Window Throttling', 'GPU Accelerated Motion', 'Strict Typing', 'Unit Testing'
+    'JHIC 1.0 Top 30', 'KRON Medali Perak', 'Robotika',
+    'SMK Telekomunikasi', 'Jombang', 'Circuit Thinking',
+    'Systems Curiosity', 'Clean Code Habits', 'Under Pressure Debugging',
   ];
 
   return (
@@ -48,7 +48,7 @@ export const TechMarquee: React.FC = () => {
         .tech-marquee-section {
           padding: 2.5rem 0;
           position: relative;
-          background-color: rgba(10, 13, 18, 0.4);
+          background-color: color-mix(in srgb, var(--bg-primary) 55%, transparent);
           border-top: 1px solid var(--border-subtle);
           border-bottom: 1px solid var(--border-subtle);
           overflow: hidden;

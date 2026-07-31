@@ -21,11 +21,11 @@ export const Skills: React.FC = () => {
         >
           <div className="section-label">
             <Cpu size={16} />
-            <span>Kedalaman Rekayasa Perangkat Lunak</span>
+            <span>Bahasa & Fondasi Teknis</span>
           </div>
-          <h2 className="section-title">Keahlian & Penguasaan Teknis</h2>
+          <h2 className="section-title">Keahlian yang Dikuasai</h2>
           <p className="section-subtitle">
-            Daftar penguasaan alat, framework, dan metodologi yang dikelompokkan secara terstruktur berdasarkan kedalaman pengalaman nyata.
+            Bahasa, markup, dan fondasi pemrograman yang saya pakai sehari-hari — jujur berdasarkan tingkat pengalaman nyata.
           </p>
         </motion.div>
 
@@ -65,8 +65,16 @@ export const Skills: React.FC = () => {
                 <div key={sIdx} className="skill-card">
                   <div className="skill-card-top">
                     <h4 className="skill-name">{skill.name}</h4>
-                    <span className={`skill-level-badge ${skill.level === 'Advanced' ? 'level-advanced' : 'level-proficient'}`}>
-                      {skill.level}
+                    <span
+                      className={`skill-level-badge ${
+                        skill.level === 'Advanced'
+                          ? 'level-advanced'
+                          : skill.level === 'Exploring'
+                            ? 'level-exploring'
+                            : 'level-proficient'
+                      }`}
+                    >
+                      {skill.level === 'Exploring' ? 'Sedikit' : skill.level === 'Proficient' ? 'Lumayan' : skill.level}
                     </span>
                   </div>
 
@@ -74,12 +82,16 @@ export const Skills: React.FC = () => {
                     <p className="skill-desc">{skill.description}</p>
                   )}
 
-                  {/* Level indicator bar */}
                   <div className="skill-progress-track">
                     <div
                       className="skill-progress-fill"
                       style={{
-                        width: skill.level === 'Advanced' ? '92%' : '76%'
+                        width:
+                          skill.level === 'Advanced'
+                            ? '92%'
+                            : skill.level === 'Exploring'
+                              ? '42%'
+                              : '72%',
                       }}
                     />
                   </div>
@@ -239,6 +251,12 @@ export const Skills: React.FC = () => {
           background-color: var(--bg-tertiary);
           color: var(--text-secondary);
           border: 1px solid var(--border-medium);
+        }
+
+        .level-exploring {
+          background-color: transparent;
+          color: var(--text-muted);
+          border: 1px dashed var(--border-medium);
         }
 
         .skill-desc {

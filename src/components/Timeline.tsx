@@ -1,35 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Flame } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Route } from 'lucide-react';
 import { experiencesData } from '../data/experiences';
 import { TimelineCard } from './TimelineCard';
 
 export const Timeline: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const el = document.getElementById('journey');
-      if (!el) return;
+      if (rafRef.current != null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        const el = document.getElementById('journey');
+        if (!el) return;
 
-      const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalHeight = rect.height;
-
-      // How far we have scrolled past journey top
-      const scrollOffset = windowHeight - rect.top;
-      const progress = Math.min(Math.max(scrollOffset / (totalHeight + windowHeight * 0.5), 0), 1);
-      setScrollProgress(progress);
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const totalHeight = rect.height;
+        const scrollOffset = windowHeight - rect.top;
+        const progress = Math.min(
+          Math.max(scrollOffset / (totalHeight + windowHeight * 0.5), 0),
+          1
+        );
+        setScrollProgress(progress);
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
     <section id="journey" className="section timeline-section">
       <div className="container">
-        {/* Section Header */}
         <div className="section-header">
           <div className="section-label">
             <Route size={16} />
@@ -41,10 +49,8 @@ export const Timeline: React.FC = () => {
           </p>
         </div>
 
-        {/* Timeline Container */}
         <div className="timeline-container">
-          {/* Animated SVG Pipe Conduit Line */}
-          <div className="timeline-svg-pipe">
+          <div className="timeline-svg-pipe" aria-hidden="true">
             <svg width="100%" height="100%" preserveAspectRatio="none">
               <line
                 x1="50%"
@@ -64,14 +70,13 @@ export const Timeline: React.FC = () => {
                 style={{
                   strokeDasharray: '2000px',
                   strokeDashoffset: `${2000 * (1 - scrollProgress)}px`,
-                  transition: 'stroke-dashoffset 0.1s linear',
-                  filter: 'drop-shadow(0 0 8px var(--color-accent))'
+                  transition: 'stroke-dashoffset 0.15s linear, stroke 0.7s ease',
+                  filter: 'drop-shadow(0 0 8px var(--color-accent))',
                 }}
               />
             </svg>
           </div>
 
-          {/* Timeline Items */}
           <div className="timeline-items-list">
             {experiencesData.map((item, index) => (
               <TimelineCard
@@ -81,14 +86,6 @@ export const Timeline: React.FC = () => {
               />
             ))}
           </div>
-        </div>
-
-        {/* Emotion Transition Callout Note */}
-        <div className="intensity-narrative-note">
-          <Flame size={18} className="note-fire-icon" />
-          <p>
-            <strong>Catatan Emosi Visual:</strong> Saat scrolling melewati momen puncak kompetisi (medali Perak KRON), sistem warna aksen berubah menjadi <strong>ORANYE INTENS</strong> sebagai lambang determinasi dan fokus tinggi.
-          </p>
         </div>
       </div>
 
@@ -191,12 +188,23 @@ export const Timeline: React.FC = () => {
           border-color: #FF5500;
           color: #FFFFFF;
           box-shadow: 0 0 20px rgba(255, 85, 0, 0.6);
-          animation: pulse-node 2s infinite ease-in-out;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .node-intense {
+            animation: pulse-node 2.4s infinite ease-in-out;
+          }
         }
 
         @keyframes pulse-node {
-          0%, 100% { transform: translate(-50%, -50%) scale(1); }
-          50% { transform: translate(-50%, -50%) scale(1.15); }
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            box-shadow: 0 0 16px rgba(255, 85, 0, 0.45);
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 0 22px rgba(255, 85, 0, 0.7);
+          }
         }
 
         .timeline-card {
@@ -326,23 +334,9 @@ export const Timeline: React.FC = () => {
           gap: 0.5rem;
         }
 
-        .intensity-narrative-note {
-          display: flex;
-          align-items: center;
-          gap: 0.85rem;
-          max-width: 760px;
-          margin: 3rem auto 0 auto;
-          padding: 1rem 1.25rem;
-          border-radius: 10px;
-          background-color: var(--bg-card);
-          border: 1px solid var(--border-medium);
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-        }
-
-        .note-fire-icon {
-          color: #FF5500;
-          flex-shrink: 0;
+        /* Prevent layout thrash from motion + transform pulse */
+        .timeline-item-wrapper {
+          will-change: auto;
         }
       `}</style>
     </section>

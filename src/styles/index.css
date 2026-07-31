@@ -1,21 +1,21 @@
 /* ==========================================================================
    Editorial Portfolio Design System
    Mode: Dark (Default) & Light (Alternate)
-   Emotion-Driven Color Shift: Normal (Teal/Emerald) -> Intense (Fiery Orange)
+   Emotion-Driven Color Shift: Blue (Focus) <-> Orange (Intense) every 10s
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* Registered custom properties enable smooth global color transition
    (mirrors nirvan.my.id @property + data-mode approach) */
-@property --color-accent { syntax: "<color>"; inherits: true; initial-value: #0D9488; }
-@property --color-accent-glow { syntax: "<color>"; inherits: true; initial-value: rgba(13, 148, 136, 0.25); }
+@property --color-accent { syntax: "<color>"; inherits: true; initial-value: #3B82F6; }
+@property --color-accent-glow { syntax: "<color>"; inherits: true; initial-value: rgba(59, 130, 246, 0.28); }
 
 :root {
-  /* Emotion Color Tokens */
-  --color-accent: #0D9488;
-  --color-accent-glow: rgba(13, 148, 136, 0.25);
-  --color-accent-rgb: 13, 148, 136;
+  /* Emotion Color Tokens — Blue (default) / Orange (intense) */
+  --color-accent: #3B82F6;
+  --color-accent-glow: rgba(59, 130, 246, 0.28);
+  --color-accent-rgb: 59, 130, 246;
   --color-accent-intense: #FF5500;
 
   /* Typography */
@@ -24,8 +24,8 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Transitions */
-  --transition-theme: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-color-shift: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  --transition-theme: background-color 0.7s cubic-bezier(0.16, 1, 0.3, 1), color 0.7s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-color-shift: color 0.7s ease, background-color 0.7s ease, border-color 0.7s ease, box-shadow 0.7s ease;
 }
 
 /* --------------------------------------------------------------------------
@@ -81,22 +81,51 @@
 }
 
 /* --------------------------------------------------------------------------
-   INTENSE MODE — global emotion shift (teal → fiery orange)
-   Triggered by profile flip OR scroll into intense timeline moments.
-   Smooth global transition via @property on <html>.
+   INTENSE MODE — global emotion shift (blue → fiery orange)
+   Auto every 10s OR profile flip. Full palette swaps with accent.
    -------------------------------------------------------------------------- */
 [data-mode="intense"] {
   --color-accent: #FF5500;
-  --color-accent-glow: rgba(255, 85, 0, 0.30);
+  --color-accent-glow: rgba(255, 85, 0, 0.32);
   --color-accent-rgb: 255, 85, 0;
+  --border-active: #FF5500;
+  --timeline-line-active: #FF5500;
+  --shadow-glow: 0 0 30px -5px rgba(255, 85, 0, 0.35);
+}
+
+/* Explicit blue base when not intense (ensures clean reverse transition) */
+[data-theme="dark"]:not([data-mode="intense"]) {
+  /* accent already blue from :root; keep bg cool */
 }
 
 [data-theme="dark"][data-mode="intense"] {
   --bg-primary: #0E0907;
+  --bg-primary-rgb: 14, 9, 7;
   --bg-secondary: #15100C;
   --bg-tertiary: #1E1812;
   --bg-card: #14100B;
   --bg-card-hover: #1B140E;
+  --text-primary: #FFF5F0;
+  --text-secondary: #C4A99A;
+  --text-muted: #8A6F60;
+  --border-subtle: rgba(255, 120, 60, 0.10);
+  --border-medium: rgba(255, 120, 60, 0.18);
+  --timeline-line: rgba(255, 120, 60, 0.18);
+}
+
+[data-theme="light"][data-mode="intense"] {
+  --bg-primary: #FFF8F4;
+  --bg-primary-rgb: 255, 248, 244;
+  --bg-secondary: #FFEEE6;
+  --bg-tertiary: #FFDCCE;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFF5F0;
+  --text-primary: #2A1208;
+  --text-secondary: #6B3D28;
+  --text-muted: #9A6A52;
+  --border-subtle: rgba(255, 85, 0, 0.12);
+  --border-medium: rgba(255, 85, 0, 0.22);
+  --timeline-line: rgba(255, 85, 0, 0.18);
 }
 
 /* --------------------------------------------------------------------------
@@ -112,7 +141,10 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
-  transition: --color-accent 0.7s ease, --color-accent-glow 0.7s ease;
+  transition:
+    --color-accent 0.7s ease,
+    --color-accent-glow 0.7s ease,
+    background-color 0.7s ease;
 }
 
 body {
@@ -120,7 +152,10 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.65;
-  transition: var(--transition-theme);
+  transition:
+    background-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.7s ease;
   overflow-x: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -358,19 +393,73 @@ ul, ol {
 }
 
 .ambient-bg__grid {
-  opacity: 0.18;
+  opacity: 0.22;
   background-image:
-    linear-gradient(rgba(13, 148, 136, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(13, 148, 136, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(90, 140, 200, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 140, 200, 0.07) 1px, transparent 1px);
   background-size: 72px 72px;
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
   -webkit-mask-image: radial-gradient(75% 65% at 50% 35%, #000 15%, transparent 70%);
   mask-image: radial-gradient(75% 65% at 50% 35%, #000 15%, transparent 70%);
+  transition: opacity 0.8s ease, background-image 0.8s ease;
+}
+
+[data-theme="light"] .ambient-bg__grid {
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(13, 148, 136, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 148, 136, 0.08) 1px, transparent 1px);
+}
+
+/* Subtle PCB / electrical fill (CSS dots + short traces) */
+.ambient-bg__circuit {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  opacity: 0.14;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(13, 148, 136, 0.35) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 70% 55%, rgba(13, 148, 136, 0.3) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 45% 80%, rgba(13, 148, 136, 0.28) 1px, transparent 1.4px),
+    radial-gradient(circle at 85% 20%, rgba(13, 148, 136, 0.25) 1px, transparent 1.4px);
+  background-size: 100% 100%;
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(70% 60% at 50% 40%, #000 20%, transparent 75%);
   transition: opacity 0.8s ease;
 }
 
-[data-theme="light"] .ambient-bg__grid { opacity: 0.08; }
+/* SVG electrical bus lines */
+.ambient-bg__traces {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.16;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(80% 70% at 50% 40%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(80% 70% at 50% 40%, #000 10%, transparent 72%);
+  transition: opacity 0.8s ease;
+}
+
+.ambient-bg__traces .trace-line {
+  fill: none;
+  stroke: rgba(13, 148, 136, 0.55);
+  stroke-width: 1.25;
+  stroke-linecap: square;
+  vector-effect: non-scaling-stroke;
+}
+
+.ambient-bg__traces .trace-node {
+  fill: rgba(13, 148, 136, 0.75);
+  stroke: rgba(13, 148, 136, 0.35);
+  stroke-width: 1;
+}
+
+[data-theme="light"] .ambient-bg__circuit { opacity: 0.08; }
+[data-theme="light"] .ambient-bg__traces { opacity: 0.1; }
+[data-theme="light"] .ambient-bg__traces .trace-line { stroke: rgba(13, 100, 90, 0.4); }
+[data-theme="light"] .ambient-bg__traces .trace-node { fill: rgba(13, 100, 90, 0.55); }
 
 .ambient-bg__glow {
   filter: blur(100px);
@@ -420,9 +509,32 @@ ul, ol {
 }
 
 [data-mode="intense"] .ambient-bg__grid {
+  opacity: 0.26;
   background-image:
-    linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(255, 85, 0, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 85, 0, 0.09) 1px, transparent 1px);
+}
+
+[data-mode="intense"] .ambient-bg__circuit {
+  opacity: 0.2;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 85, 0, 0.4) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 70% 55%, rgba(255, 85, 0, 0.35) 1.2px, transparent 1.5px),
+    radial-gradient(circle at 45% 80%, rgba(255, 100, 20, 0.3) 1px, transparent 1.4px),
+    radial-gradient(circle at 85% 20%, rgba(255, 85, 0, 0.28) 1px, transparent 1.4px);
+}
+
+[data-mode="intense"] .ambient-bg__traces {
+  opacity: 0.22;
+}
+
+[data-mode="intense"] .ambient-bg__traces .trace-line {
+  stroke: rgba(255, 100, 40, 0.65);
+}
+
+[data-mode="intense"] .ambient-bg__traces .trace-node {
+  fill: rgba(255, 100, 40, 0.85);
+  stroke: rgba(255, 85, 0, 0.4);
 }
 
 /* Light mode — softer teal orbs readable on bright base */
@@ -455,8 +567,11 @@ ul, ol {
 
 @media (max-width: 768px) {
   .ambient-bg__glow { filter: blur(70px); opacity: 0.75; }
+  .ambient-bg__glow--b,
   .ambient-bg__glow--c { display: none; }
-  .ambient-bg__grid { opacity: 0.1; background-size: 56px 56px; }
+  .ambient-bg__grid { opacity: 0.12; background-size: 56px 56px; }
+  .ambient-bg__traces,
+  .ambient-bg__circuit { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

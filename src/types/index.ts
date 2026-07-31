@@ -18,6 +18,22 @@ export interface ProfileData {
     username: string;
   }[];
   contactEmail: string;
+  tags?: string[];
+}
+
+export interface EducationItem {
+  id: string;
+  stage: 'SD' | 'SMP' | 'SMK' | string;
+  school: string;
+  location?: string;
+  note?: string;
+}
+
+export interface HobbyItem {
+  id: string;
+  name: string;
+  description: string;
+  iconName?: 'circuit' | 'server' | 'code';
 }
 
 export interface TimelineItem {
@@ -31,7 +47,8 @@ export interface TimelineItem {
   highlights: string[];
   technologies: string[];
   metrics?: string;
-  isIntenseMoment?: boolean; // Triggers intense orange state when scrolled into view
+  /** Visual highlight on timeline card only — does not trigger global intense mode */
+  isIntenseMoment?: boolean;
 }
 
 export interface ProjectItem {
