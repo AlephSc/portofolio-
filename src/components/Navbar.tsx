@@ -156,6 +156,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           border: none;
           cursor: pointer;
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 40vw;
+        }
+
+        @media (max-width: 1024px) {
+          .navbar-brand {
+            max-width: 55vw;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .navbar-brand {
+            max-width: 50vw;
+          }
+        }
+
+        .brand-name {
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .brand-dot {
@@ -245,11 +265,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           justify-content: center;
           width: 44px;
           height: 44px;
-          border-radius: 8px;
+          border-radius: 10px;
           background-color: var(--bg-secondary);
           color: var(--text-primary);
           border: 1px solid var(--border-subtle);
           cursor: pointer;
+          flex-shrink: 0;
+          transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .mobile-menu-btn:hover {
+          border-color: var(--color-accent);
+          background-color: var(--bg-tertiary);
+        }
+
+        .mobile-menu-btn:active {
+          transform: scale(0.96);
         }
 
         @media (max-width: 1024px) {
@@ -260,13 +291,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         .mobile-menu-drawer {
           position: fixed;
-          top: 65px;
+          top: 64px;
           left: 0;
           right: 0;
           background-color: var(--bg-primary);
           border-bottom: 1px solid var(--border-medium);
-          padding: 1.5rem 0;
+          padding: 1.25rem 0 1.5rem;
           box-shadow: var(--shadow-subtle);
+          max-height: calc(100vh - 64px);
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          animation: mobile-drawer-in 0.22s ease-out;
+        }
+
+        @keyframes mobile-drawer-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
         .mobile-menu-content {

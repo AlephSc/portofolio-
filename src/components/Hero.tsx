@@ -50,7 +50,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           <div className="hero-status-pill hero-mask-pulse">
             <span className="status-dot" />
             <Activity size={13} className="text-emerald-400" />
-            <span>Tersedia untuk tantangan & arsitektur sistem komputasi</span>
+            <span>Terbuka untuk proyek dan ide baru</span>
           </div>
 
           <h1 className="hero-name">
@@ -385,8 +385,8 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           cursor: pointer;
           border-radius: 16px;
           will-change: transform;
-          /* soft ground shadow that stays under the card */
-          filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+          /* NOTE: filter: drop-shadow() breaks backface-visibility in Chrome/Edge.
+             Shadow is handled via box-shadow on .portrait-face instead. */
         }
 
         .portrait-flip:hover:not(.is-flipped) {
@@ -420,7 +420,7 @@ export const Hero: React.FC<{ isFlipped: boolean; onFlip: () => void }> = ({ isF
           background-color: var(--bg-card);
           box-shadow:
             0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-            0 12px 40px rgba(0, 0, 0, 0.35);
+            0 18px 40px rgba(0, 0, 0, 0.4);
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
           transform-style: preserve-3d;
