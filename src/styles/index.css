@@ -344,7 +344,10 @@ ul, ol {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  /* Reduce vestibular motion for general UI, but keep intentional
+     loading-screen + lightning animations (they are short, user-facing effects). */
+  *:not(.loading-screen):not(.loading-screen *):not(.lightning-overlay):not(.lightning-overlay *),
+  *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

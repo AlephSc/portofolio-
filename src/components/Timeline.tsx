@@ -50,31 +50,12 @@ export const Timeline: React.FC = () => {
         </div>
 
         <div className="timeline-container">
-          <div className="timeline-svg-pipe" aria-hidden="true">
-            <svg width="100%" height="100%" preserveAspectRatio="none">
-              <line
-                x1="50%"
-                y1="0"
-                x2="50%"
-                y2="100%"
-                stroke="var(--timeline-line)"
-                strokeWidth="3"
-              />
-              <line
-                x1="50%"
-                y1="0"
-                x2="50%"
-                y2="100%"
-                stroke="var(--color-accent)"
-                strokeWidth="3"
-                style={{
-                  strokeDasharray: '2000px',
-                  strokeDashoffset: `${2000 * (1 - scrollProgress)}px`,
-                  transition: 'stroke-dashoffset 0.15s linear, stroke 0.7s ease',
-                  filter: 'drop-shadow(0 0 8px var(--color-accent))',
-                }}
-              />
-            </svg>
+          {/* CSS rail — left: 50% desktop / 20px mobile, same axis as .timeline-node */}
+          <div className="timeline-rail" aria-hidden="true">
+            <div
+              className="timeline-rail-progress"
+              style={{ height: `${Math.round(scrollProgress * 100)}%` }}
+            />
           </div>
 
           <div className="timeline-items-list">
@@ -100,23 +81,40 @@ export const Timeline: React.FC = () => {
           max-width: 960px;
           margin: 0 auto;
           padding: 2rem 0;
-        }
-
-        .timeline-svg-pipe {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          pointer-events: none;
-          z-index: 1;
+          /* Shared axis: desktop center, mobile left gutter (matches .timeline-node) */
+          --timeline-axis: 50%;
         }
 
         @media (max-width: 768px) {
-          .timeline-svg-pipe line {
-            x1: 20px !important;
-            x2: 20px !important;
+          .timeline-container {
+            --timeline-axis: 16px;
           }
+        }
+
+        .timeline-rail {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: var(--timeline-axis);
+          width: 3px;
+          transform: translateX(-50%);
+          pointer-events: none;
+          z-index: 1;
+          background-color: var(--timeline-line);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .timeline-rail-progress {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          min-height: 0;
+          background-color: var(--color-accent);
+          border-radius: 2px;
+          box-shadow: 0 0 10px var(--color-accent);
+          transition: height 0.15s linear, background-color 0.7s ease, box-shadow 0.7s ease;
         }
 
         .timeline-items-list {
@@ -146,14 +144,15 @@ export const Timeline: React.FC = () => {
           .timeline-item-wrapper.item-even,
           .timeline-item-wrapper.item-odd {
             justify-content: flex-start;
-            padding-left: 3.25rem;
+            /* 16px axis + half node (16px) + gap */
+            padding-left: 2.75rem;
             padding-right: 0;
           }
         }
 
         .timeline-node {
           position: absolute;
-          left: 50%;
+          left: var(--timeline-axis);
           top: 1.75rem;
           transform: translate(-50%, -50%);
           width: 32px;
@@ -166,14 +165,8 @@ export const Timeline: React.FC = () => {
           justify-content: center;
           color: var(--color-accent);
           z-index: 3;
-          transition: all 0.3s ease;
+          transition: all 0.3s ease, left 0s;
           box-shadow: 0 0 15px var(--color-accent-glow);
-        }
-
-        @media (max-width: 768px) {
-          .timeline-node {
-            left: 20px;
-          }
         }
 
         .node-inner-dot {

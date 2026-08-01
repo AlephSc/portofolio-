@@ -15,6 +15,7 @@ import { Skills } from './components/Skills';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { LightningOverlay } from './components/LightningOverlay';
+import { LoadingScreen } from './components/LoadingScreen';
 
 type StrikeState = {
   tick: number;
@@ -38,6 +39,22 @@ export function App() {
   const handleStrikeComplete = useCallback(() => {
     setStrike(null);
   }, []);
+
+  // Scroll lock while loading screen is up
+  useEffect(() => {
+    const root = document.documentElement;
+    if (showEntrance) {
+      root.setAttribute('data-loading', 'true');
+      document.body.style.overflow = 'hidden';
+    } else {
+      root.removeAttribute('data-loading');
+      document.body.style.overflow = '';
+    }
+    return () => {
+      root.removeAttribute('data-loading');
+      document.body.style.overflow = '';
+    };
+  }, [showEntrance]);
 
   useEffect(() => {
     if (!entranceDone) return;
@@ -75,19 +92,13 @@ export function App() {
         <Footer />
 
         {showEntrance && (
-          <LightningOverlay
-            variant="entrance"
-            color="blue"
-            onComplete={handleEntranceComplete}
-          />
+          <LoadingScreen onComplete={handleEntranceComplete} />
         )}
 
         {strike && (
           <LightningOverlay
             key={strike.tick}
-            variant="strike"
             color={strike.color}
-            strikeSeed={strike.tick}
             onComplete={handleStrikeComplete}
           />
         )}
