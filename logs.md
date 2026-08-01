@@ -1,5 +1,58 @@
 # Session logs — Portfolio
 
+## 2026-08-01 — LoadingScreen trisula (curtain split)
+
+- Create `LoadingScreen.tsx`: solid dark panels L/R, trisula draw, glowing crack, panels open outward
+- App: entrance = LoadingScreen (z 20000); strike tetap LightningOverlay
+- Scroll lock via data-loading + body overflow; Lewati + reduced-motion skip
+- LightningOverlay: strike-only (entrance dihapus)
+
+---
+
+## 2026-08-01 — Fix lightning visibility + dual identity + Lua Scripting
+
+- Lightning: stroke tebal, flash/band/crack dramatis (sebelumnya terlalu tipis → “tidak terlihat”)
+- Hapus flip-hint `// mode intense · oranye`
+- Dual identity: depan Fajar + foto; belakang **Aleph** + monogram **A tanpa garis tengah**
+- Lua Programmer → **Lua Scripting** + bio Growtopia / Growlauncher (tanpa AI)
+- Typecheck OK
+
+---
+
+## 2026-08-01 — Lightning overlay (trisula + petir ganti warna)
+
+- Create `LightningOverlay.tsx`: entrance (trisula, flash bright) + strike (bolt acak + band + flash soft)
+- `App.tsx`: entrance one-shot on mount; strike on every `isIntense` change after entrance
+- z-index 10000 (di atas grain); reduced-motion skip visual + still complete
+- Delay-based sync: color crossfade 0.7s starts with bolt (not perfect wipe)
+
+---
+
+## 2026-08-01 — Tambah project portfolio ke list
+
+- `projects.ts`: entri **Leptopia — Personal Portfolio** (Production)
+- Live: https://leptopia.web.id | GitHub: AlephSc/portofolio-
+- Projects section title/subtitle diperhalus (bukan empty-state bombastis)
+
+---
+
+## 2026-08-01 — Fix foto production (rename + push)
+
+- Rename `public/profile.jpg` → `public/fajar-avatar.jpg`
+- `avatarUrl: "/fajar-avatar.jpg"` (bypass cache CDN/browser di `/profile.jpg`)
+- Commit `3441510` pushed ke `origin/main`
+- User: tunggu redeploy Vercel di leptopia.web.id, hard refresh
+
+---
+
+## 2026-08-01 — Konteks deploy user
+
+- Portfolio = **project pertama** user
+- Hosting: **Vercel**, domain kustom **leptopia.web.id** (bukan GitHub Pages subpath)
+- Implikasi review: `base: '/'` di Vite **benar** untuk Vercel+custom domain; temuan subpath GH Pages tidak relevan
+
+---
+
 ## 2026-07-31 — Footer + kontak lengkap
 
 - Footer: GitHub AlephSc (link), WhatsApp 081515135960 (wa.me), IG @alepjir, email alephsc25@gmail.com
